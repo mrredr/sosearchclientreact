@@ -1,0 +1,12 @@
+.table {
+  font-size: 22px;
+  width: 100%;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+.tableWrapper {
+  padding: 0 10px;
+}

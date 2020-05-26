@@ -1,0 +1,43 @@
+.subRow {
+  display: flex;
+
+  flex-wrap: wrap;
+}
+
+.cell {
+  text-align: start;
+}
+
+.cell-title {
+
+}
+
+.cell-name {
+  font-size: 19px;
+}
+
+.cell-count {
+  margin-right: 15px;
+  font-size: 19px;
+}
+
+.cell-tags {
+  font-size: 19px;
+  margin-top: 2px;
+}
+
+.tag {
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+/* TODO: add tooptiop on hover */
+.cell-link:hover {
+  color: #61dafb;
+  cursor: pointer;
+  border-color: #61dafb;
+}
+

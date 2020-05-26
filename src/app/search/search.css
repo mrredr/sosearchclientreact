@@ -1,0 +1,23 @@
+.search {
+  display: flex;
+  height: 50px;
+}
+
+.search-input {
+  display: inline-flex;
+  font-size: 32px;
+}
+
+.search-button {
+  border: 1px black;
+  display: inline-flex;
+  font-size: 32px;
+}
+
+.search-button:hover {
+  cursor: pointer;
+}
+
+.search-button:active {
+  box-shadow: inset 0 0 5px #61dafb;
+}

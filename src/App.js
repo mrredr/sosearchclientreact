@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
 
-function App() {
+import './App.css';
+import Search from './app/search/Search';
+import Results from './app/results/Results';
+import Question from './app/question/Question';
+import ErrorBoundary from './ErrorBoundary';
+import { Context } from './store/connect';
+import { reducer, initialState } from './store/store.ts';
+
+const AppContent = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Router>
+      <Switch>
+        <Route path="/results">
+          <Results />
+        </Route>
+        <Route path="/question/:questionId">
+          <Question />
+        </Route>
+        <Route path="/blank">
+          <div />
+        </Route>
+        <Route path="/">
+          <Search />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+
+const App = () => {
+  const defaultStoreValue = useReducer(reducer, initialState);
+  return (
+    <div className="app">
+      <Context.Provider value={defaultStoreValue}>
+        <main className="app-main">
+          <ErrorBoundary>
+            <AppContent />
+          </ErrorBoundary>
+        </main>
+      </Context.Provider>
     </div>
   );
-}
+};
 
 export default App;
