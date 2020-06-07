@@ -14,6 +14,7 @@ import Search from './app/search/Search';
 import Results from './app/results/Results';
 import Question from './app/question/Question';
 import ErrorBoundary from './ErrorBoundary';
+import Animate from './ui/animateMount/AnimateMount';
 import { reducer } from './store/store.ts';
 import { allWatchers } from './store/sagas';
 
@@ -22,17 +23,19 @@ export const history = createBrowserHistory();
 const AppContent = () => {
   return (
     <Router history={history}>
-      <Switch>
-        <Route path="/results">
-          <Results />
-        </Route>
-        <Route path="/question/:questionId">
-          <Question />
-        </Route>
-        <Route path="/">
-          <Search />
-        </Route>
-      </Switch>
+      <Animate>
+        <Switch>
+          <Route path="/results">
+            <Results />
+          </Route>
+          <Route path="/question/:questionId">
+            <Question />
+          </Route>
+          <Route path="/">
+            <Search />
+          </Route>
+        </Switch>
+      </Animate>
     </Router>
   );
 };

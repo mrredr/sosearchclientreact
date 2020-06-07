@@ -29,7 +29,7 @@ const Results = () => {
       setSearchQuery(query);
       dispatch(loadResultsPage(queryParams));
     }
-  }, [queryParams]);
+  }, [queryParams, dispatch]);
 
   if (loading || queryParams === null) {
     return <Loader />;

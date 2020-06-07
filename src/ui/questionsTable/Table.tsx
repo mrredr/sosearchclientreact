@@ -17,9 +17,10 @@ const Table = ({
   titleFor: string;
   clickableLinks?: ClickableLinks;
 }) => {
-  const [soretedList, setSortedList] = useState<Question[]>([]);
+  const [soretedList, setSortedList] = useState<Question[]>([...list]);
   useEffect(() => {
-    setSortedList([...list]);
+    if (list.length > 0)
+      setSortedList([...list]);
   }, [list]);
 
   if (isEmpty(list)) {
