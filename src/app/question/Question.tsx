@@ -17,7 +17,7 @@ const Question = () => {
 
   useEffect(() => {
     dispatch(loadQuestionPage({ id: questionId }));
-  }, [questionId]);
+  }, [questionId, dispatch]);
 
   if (loading) {
     return <Loader />;

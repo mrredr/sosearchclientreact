@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { isEmpty } from 'ramda';
 import { useSelector } from 'react-redux';
 
 import QuestionsTable from '../../../ui/questionsTable/Table';
 import { QueryParams } from '../../../hooks/useQueryParams';
 import { State } from '../../../store/store';
-import { QuickViewState } from '../Results';
 import '../results.css';
 
 const QuickViewTagTable = ({ tag }: { tag: string; }) => {

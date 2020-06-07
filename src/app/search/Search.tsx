@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { trim, isEmpty, prop } from 'ramda';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { State } from '../../store/store';
@@ -10,14 +10,13 @@ import useQueryParams from '../../hooks/useQueryParams';
 import './search.css';
 
 function Search() {
-  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
   const loading = useSelector((state: State) => prop('loading', state));
   const queryParams = useQueryParams();
 
   const history = useHistory();
   useEffect(() => {
-    setSearchValue(queryParams && queryParams.query || '');
+    setSearchValue(queryParams ? queryParams.query || '' : '');
   }, [queryParams]);
 
   const handleSubmit = (e: any) => {

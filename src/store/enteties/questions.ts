@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery, takeLatest, take, fork, select, PutEffect, CallEffect } from 'redux-saga/effects';
+import { call, select } from 'redux-saga/effects';
 import { callApi, fetchEntity } from '../api';
 import { convertQuestionsApiResponseToStore, action, createRequestTypes } from '../../utils/utils';
 import { getQuestions } from '../selectors';

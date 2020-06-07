@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery, takeLatest, take, fork, select, PutEffect, CallEffect } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { SagaIterator } from '@redux-saga/core';
 
 const API_URL = 'https://api.stackexchange.com/2.2';

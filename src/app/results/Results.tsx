@@ -12,9 +12,6 @@ import { loadResultsPage } from '../../store/sagas';
 
 import './results.css';
 
-export type QuickViewState = 'tag' | 'author' | '';
-
-
 const Results = () => {
   const dispatch = useDispatch();
   const queryParams = useQueryParams();

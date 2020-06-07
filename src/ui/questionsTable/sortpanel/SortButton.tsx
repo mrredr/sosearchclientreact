@@ -21,7 +21,7 @@ export const SortButton = ({ text, type, onClick, activeSortKey }) => {
     if (activeSortKey !== type) {
       setDirection(Directions.default);
     }
-  }, [activeSortKey]);
+  }, [activeSortKey, type]);
 
   const handleClick = () => {
     const newDirection = {
