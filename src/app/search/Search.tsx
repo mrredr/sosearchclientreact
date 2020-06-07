@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { trim, isEmpty, prop } from 'ramda';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import './search.css';
-import { useAction, useSelector } from '../../store/connect';
-import { loadQuestionsByQuery as loadResultsAction} from '../../store/actions.ts';
+
+import { State } from '../../store/store';
 import Loader from '../../ui/loader/Loader';
 import useQueryParams from '../../hooks/useQueryParams';
 
+import './search.css';
 
 function Search() {
+  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
-  const loadResults = useAction(loadResultsAction);
-  const loading = useSelector(prop('loading'));
+  const loading = useSelector((state: State) => prop('loading', state));
   const queryParams = useQueryParams();
 
   const history = useHistory();
@@ -19,20 +20,18 @@ function Search() {
     setSearchValue(queryParams && queryParams.query || '');
   }, [queryParams]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault(); // Prevent browser reloading on form event
 
     const trimmedValue = trim(searchValue);
     if (!isEmpty(trimmedValue)) {
-      loadResults(trimmedValue).then(() => {
-        history.push(`/results?query=${trimmedValue}`);
-      });
+      history.push(`/results?query=${trimmedValue}`);
     } else {
       // TODO:: Highlight input with red light
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { value } = e.target;
     history.push(`/?query=${trim(value)}`);
     setSearchValue(value);

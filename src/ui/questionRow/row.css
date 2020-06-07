@@ -8,11 +8,7 @@
   text-align: start;
 }
 
-.cell-title {
-
-}
-
-.cell-name {
+.cell-author {
   font-size: 19px;
 }
 
@@ -28,10 +24,11 @@
 
 .tag {
   display: inline-block;
-  margin-right: 5px;
+  padding: 3px;
+  margin: 0 5px 5px 0;
   border: 1px solid white;
   border-radius: 5px;
-  padding: 3px;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 /* TODO: add tooptiop on hover */

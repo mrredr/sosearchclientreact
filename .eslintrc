@@ -3,5 +3,11 @@
   "plugins": ["jsx-a11y"],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
+  },
+  "import/resolver": {
+    "node": {
+      "paths": ["src"],
+      "extensions": [".js", ".jsx", ".ts", ".tsx"]
+    }
   }
 }

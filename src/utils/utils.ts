@@ -13,8 +13,8 @@ export function decodeHtml(html: string) {
   return txt.value;
 }
 
-export const convertQuestionsApiToStore = (questions: any): Question[] => (
-  questions.map((question: any) => ({
+export const convertQuestionsApiResponseToStore = ({ items }): Question[] => (
+  items.map((question: any) => ({
     id: question.question_id,
     title: decodeHtml(question.title),
     answerCount: question.answer_count,
@@ -24,10 +24,31 @@ export const convertQuestionsApiToStore = (questions: any): Question[] => (
   }))
 );
 
-export const convertAnswersApiToStore = (answers: any): Answer[] => (
-  answers.map((answer: any) => ({
+export const convertAnswersApiResponseToStore = ({ items }): Answer[] => (
+  items.map((answer: any) => ({
     id: answer.answer_id,
-    title: decodeHtml(answer.title),
     body: decodeHtml(answer.body),
   }))
 );
+
+export const convertQuestionApiResponseToStore = (question) => {
+  return question.items[0].title;
+};
+
+export function action(type: string, payload = {}) {
+  return {type, payload}
+}
+
+export function createRequestTypesBase(base) {
+  return ['REQUEST', 'SUCCESS', 'FAILURE'].reduce((acc, callbackType) => {
+		acc[callbackType] = `${base}_${callbackType}`
+		return acc
+	}, {})
+}
+
+export function createRequestTypes(base: string, types: string[]) {
+  return types.reduce((acc: Record<string, Record<string, string>>, type: string) => {
+    acc[type] = createRequestTypesBase(`${base}_${type}`);
+    return acc;
+  }, {});
+}

@@ -1,23 +1,22 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { prop, isEmpty } from 'ramda';
+import { prop } from 'ramda';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useAction, useSelector } from '../../store/connect';
-import { loadQuestionAnswers as loadQuestionAnswersAction, loadQuestion as loadQuestionAction } from '../../store/actions';
 import { State, Answer } from '../../store/store';
 import AnswerComponent from '../../ui/answer/Answer';
 import Loader from '../../ui/loader/Loader';
+import { loadQuestionPage } from '../../store/sagas';
+import './question.css';
 
 const Question = () => {
-  const loading = useSelector(prop('loading'));
+  const dispatch = useDispatch();
+  const loading = useSelector((state: State) => prop('loading', state));
   const { questionId } = useParams();
-  const loadQuestionAnswers = useAction(loadQuestionAnswersAction);
-  const loadQuestoin = useAction(loadQuestionAction);
-  const question = useSelector((state: State) => state.questions[questionId] || {});
+  const question = useSelector((state: State) => state.questionAnswers[questionId] || {});
 
   useEffect(() => {
-    loadQuestionAnswers(questionId);
-    loadQuestoin(questionId);
+    dispatch(loadQuestionPage({ id: questionId }));
   }, [questionId]);
 
   if (loading) {
@@ -30,7 +29,7 @@ const Question = () => {
       <h2>{question.title}</h2>
 
       {question.answers && question.answers.map((answer: Answer) => (
-        <div key={answer.id}>
+        <div key={answer.id} className="answer">
           <AnswerComponent answer={answer} />
         </div>
       ))}

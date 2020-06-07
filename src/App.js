@@ -1,30 +1,33 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga'
+import { createBrowserHistory } from 'history';
 
 import './App.css';
 import Search from './app/search/Search';
 import Results from './app/results/Results';
 import Question from './app/question/Question';
 import ErrorBoundary from './ErrorBoundary';
-import { Context } from './store/connect';
-import { reducer, initialState } from './store/store.ts';
+import { reducer } from './store/store.ts';
+import { allWatchers } from './store/sagas';
+
+export const history = createBrowserHistory();
 
 const AppContent = () => {
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route path="/results">
           <Results />
         </Route>
         <Route path="/question/:questionId">
           <Question />
-        </Route>
-        <Route path="/blank">
-          <div />
         </Route>
         <Route path="/">
           <Search />
@@ -35,16 +38,22 @@ const AppContent = () => {
 };
 
 const App = () => {
-  const defaultStoreValue = useReducer(reducer, initialState);
+  const sagaMiddleware = createSagaMiddleware()
+  const store = createStore(
+    reducer,
+    applyMiddleware(sagaMiddleware)
+  );
+  sagaMiddleware.run(allWatchers);
+
   return (
     <div className="app">
-      <Context.Provider value={defaultStoreValue}>
+      <Provider store={store}>
         <main className="app-main">
           <ErrorBoundary>
             <AppContent />
           </ErrorBoundary>
         </main>
-      </Context.Provider>
+      </Provider>
     </div>
   );
 };

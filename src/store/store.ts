@@ -10,85 +10,68 @@ export type Question = {
 
 export type Answer = {
   id: string;
-  title: string;
   body: string;
 };
 export type Query = string;
 
-export const ADD_QUERY_QUESTIONS = 'addQueryQuestoins';
-export const ADD_TAG_QUESTIONS = 'addTagQuestoins';
-export const ADD_AUTHOR_QUESTIONS = 'addAuthorQuestoins';
 export const ADD_QUESTION_ANSWERS = 'addQuestionAnswers';
 export const ADD_QUESTION_TITLE = 'addQuestionTitle';
 export const LOADING = 'loading';
 export const NOT_LOADING = 'notLoading';
 
 export type State = {
-  questionsByQuery: Record<Query, Question[]>;
-  questionsByAuthor: Record<string, Question[]>;
-  questionsByTag: Record<string, Question[]>;
-  questions: Record<Question['id'], Pick<Question, 'title' | 'answers'>>;
-  loading: boolean;
+  queryQuestions: Record<Query, Question[]>;
+  authorQuestions: Record<string, Question[]>;
+  tagQuestions: Record<string, Question[]>;
+  questionAnswers: Record<Question['id'], Pick<Question, 'title' | 'answers'>>;
+  loading: boolean | string;
 };
 
 export const initialState: State = {
-  questionsByQuery: {},
-  questionsByAuthor: {},
-  questionsByTag: {},
-  questions: {},
+  queryQuestions: {},
+  authorQuestions: {},
+  tagQuestions: {},
+  questionAnswers: {},
   loading: false,
 };
 
 export const reducer = (state = initialState, { type, payload }: { type: string, payload: any }) => {
   switch (type) {
-    case ADD_QUERY_QUESTIONS:
-      // payload: { query: string; items: Question[]; }
+    case 'QUESTIONS_QUERY_SUCCESS':
+    case 'QUESTIONS_TAG_SUCCESS':
+    case 'QUESTIONS_AUTHOR_SUCCESS':
+      // payload: { query: tag | query | author, response: Question[] }
+      const qustionsKey = `${payload.type}Questions`;
       return {
         ...state,
-        questionsByQuery: {
-          ...state.questionsByQuery,
-          [payload.query]: [...state.questionsByQuery[payload.query] || [], ...payload.items],
-        },
+        [qustionsKey]: {
+          ...state[qustionsKey],
+          [payload.query]: [...state[qustionsKey][payload.query] || [], ...payload.response],
+        }
       };
-    case ADD_TAG_QUESTIONS:
-      // payload: { tag: string; items: Question[]; }
+
+    case 'ANSWERS_SUCCESS':
+      // payload: { id: Question['id'], response: Answer[] }
       return {
         ...state,
-        questionsByTag: {
-          ...state.questionsByTag,
-          [payload.tag]: [...state.questionsByTag[payload.tag] || [], ...payload.items],
-        },
-      };
-    case ADD_AUTHOR_QUESTIONS:
-      // payload: { author: string; items: Question[]; }
-      return {
-        ...state,
-        questionsByAuthor: {
-          ...state.questionsByAuthor,
-          [payload.author]: [...state.questionsByAuthor[payload.author] || [], ...payload.items],
-        },
-      };
-    case ADD_QUESTION_ANSWERS:
-      // payload: { id: Question['id'], items: Answer[] }
-      return {
-        ...state,
-        questions: {
-          ...state.questions,
+        questionAnswers: {
+          ...state.questionAnswers,
           [payload.id]: {
-            ...state.questions[payload.id],
-            answers: payload.items,
+            ...state.questionAnswers[payload.id],
+            answers: payload.response,
           },
         },
       };
-    case ADD_QUESTION_TITLE:
-      // payload: { id: string; title: string }
+    case 'QUESTION_SUCCESS':
+      // payload: { id: string; response: string }
+      console.log('')
       return {
         ...state,
-        questions: {
-          ...state.questions,
+        questionAnswers: {
+          ...state.questionAnswers,
           [payload.id]: {
-            ...state.questions[payload.id],
-            title: payload.title,
+            ...state.questionAnswers[payload.id],
+            title: payload.response,
           },
         },
       };
@@ -96,6 +79,6 @@ export const reducer = (state = initialState, { type, payload }: { type: string,
       return { ...state, loading: true };
     case NOT_LOADING:
       return { ...state, loading: false };
-    default: throw new Error('Unexpected action');
+    default: return state;
   };
 };
